@@ -49,7 +49,7 @@ if __name__ == '__main__':
             border: 1px solid #777;
         }
     """)
-    logo_path = "/Users/anshumaansoni/Desktop/Screenshot 2025-06-03 at 17.15.51.png"
+    logo_path = "LOGO.png"
     window = App(logo_path)
     window.show()
     sys.exit(app.exec_())

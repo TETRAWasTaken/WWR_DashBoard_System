@@ -228,18 +228,3 @@ class Dashboard(QWidget):
         self.setWindowTitle('WWR')
         self.setGeometry(0, 0, 1280, 720)
         self.show()
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    app.setStyleSheet("""
-    QWidget {
-        background-color: black; 
-    }
-    FuelGauge {
-        background-color: black;
-    } 
-    """)
-    dashboard = Dashboard()
-    dashboard.WindowProperties()
-    sys.exit(app.exec_())
