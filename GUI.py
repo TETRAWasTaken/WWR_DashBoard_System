@@ -1,7 +1,8 @@
 import sys
 import threading
 
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QProgressBar, QGridLayout
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QProgressBar, QGridLayout, \
+    QMessageBox
 from PyQt5.QtCore import Qt, QTimer, QRect
 from PyQt5.QtGui import QPainter, QPen, QColor, QFont, QPixmap
 from Widgets import FuelGauge, DialGauge, ThrottleBar
@@ -15,8 +16,9 @@ MAX_SPEED = 200
 MAX_FUEL = 100
 
 class Dashboard(QWidget):
-    def __init__(self):
+    def __init__(self, logo_path = None):
         super().__init__()
+        self.logo_path = logo_path
 
         self.initUI()
         self.initData()
@@ -32,15 +34,19 @@ class Dashboard(QWidget):
         miscellaneousLayout.setSpacing(150)
         mainLayout.addLayout(miscellaneousLayout, 0, 0)
 
-        self.logo = QLabel(self)
-        pixmap = QPixmap("/Users/anshumaansoni/Desktop/Screenshot 2025-04-11 at 20.11.35.png")
-        pixmap = pixmap.scaledToWidth(150, Qt.SmoothTransformation)
-        self.logo.setPixmap(pixmap)
-        self.logo.setAlignment(Qt.AlignLeft | Qt.AlignTop)
-        miscellaneousLayout.addWidget(self.logo, 0, 0)
+        try:
+            self.logo = QLabel(self)
+            pixmap = QPixmap(self.logo_path)
+            pixmap = pixmap.scaledToWidth(150, Qt.SmoothTransformation)
+            self.logo.setPixmap(pixmap)
+            self.logo.setAlignment(Qt.AlignLeft | Qt.AlignTop)
+            miscellaneousLayout.addWidget(self.logo, 0, 0)
+
+        except Exception as e:
+            QMessageBox.critical(self, "Error", "Logo not found")
 
         tag = "Designed To Perform, Manufactured to Win"
-        for i in range(32):
+        for i in range(20):
             tag = ' '+tag
         self.tagline = QLabel(tag)
         self.tagline.setAlignment(Qt.AlignCenter)
@@ -51,6 +57,18 @@ class Dashboard(QWidget):
         speedRpmLayout = QGridLayout()
         mainLayout.addLayout(speedRpmLayout, 1, 0, 1, 2)
 
+        # Gear Display
+        gearLayout = QGridLayout()
+        self.gearPosition = QLabel('5')
+        self.gearPositionLabel = QLabel('Gear')
+        self.gearPosition.setAlignment(Qt.AlignCenter)
+        self.gearPositionLabel.setAlignment(Qt.AlignCenter)
+        gearLayout.addWidget(self.gearPositionLabel, 0, 0)
+        gearLayout.addWidget(self.gearPosition, 1, 0, 2, 1)
+        self.gearPosition.setStyleSheet("font-size: 200px; color: White;")
+        gearLayout.setRowStretch(1, 1)
+        speedRpmLayout.addLayout(gearLayout, 0, 1)
+
         # Speed display
         speedLayout = QVBoxLayout()
         speedRpmLayout.addLayout(speedLayout, 0, 0)
@@ -59,7 +77,7 @@ class Dashboard(QWidget):
 
         # RPM display
         rpmLayout = QVBoxLayout()
-        speedRpmLayout.addLayout(rpmLayout, 0, 1)
+        speedRpmLayout.addLayout(rpmLayout, 0, 2)
         self.rpm_dial = DialGauge('RPM', 'x1000', 0, MAX_RPM/1000, minx=400, miny=400)
         rpmLayout.addWidget(self.rpm_dial)
 
@@ -122,9 +140,6 @@ class Dashboard(QWidget):
         mainLayout.setRowStretch(2, 1)
         mainLayout.setRowStretch(3, 0)
 
-        # Window properties
-        self.setWindowTitle('Dashboard')
-        self.setGeometry(0, 0, 1280, 720)
         self.show()
 
     def initData(self):
@@ -209,16 +224,22 @@ class Dashboard(QWidget):
         val = range + inc
         return val
 
+    def WindowProperties(self):
+        self.setWindowTitle('WWR')
+        self.setGeometry(0, 0, 1280, 720)
+        self.show()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setStyleSheet("""
-    QMainWindow {
+    QWidget {
         background-color: black; 
     }
     FuelGauge {
-        background-color: transparent;
+        background-color: black;
     } 
     """)
     dashboard = Dashboard()
+    dashboard.WindowProperties()
     sys.exit(app.exec_())

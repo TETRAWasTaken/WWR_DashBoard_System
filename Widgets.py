@@ -13,19 +13,16 @@ class DialGauge(QWidget):
         self.min_val = min_val
         self.max_val = max_val
         self._value = min_val
-        self.setMaximumSize(minx, miny) # Set a minimum size for the widget
+        self.setMinimumSize(minx, miny) # Set a minimum size for the widget
         # Make the widget expandable but keep aspect ratio
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
 
     def setValue(self, value):
-        """Sets the current value of the gauge."""
-        # Clamp value within min/max range
         self._value = max(self.min_val, min(self.max_val, value))
         self.update() # Trigger a repaint
 
     def value(self):
-        """Returns the current value."""
         return self._value
 
     # Added resizeEvent to maintain aspect ratio
