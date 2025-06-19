@@ -1,4 +1,4 @@
-import GUI as DashBoard
+import DashBoard as DashBoard
 import SplashScreen as SplashScreen
 import sys
 import time
@@ -23,12 +23,18 @@ class App(QMainWindow):
         self.splashScreen = SplashScreen.SplashScreen(logo_path)
         self.mainStack.addWidget(self.splashScreen)
 
+        self.mainStack.setCurrentIndex(0)
+
         self.dashboard = DashBoard.Dashboard(logo_path)
         self.mainStack.addWidget(self.dashboard)
 
-        self.mainStack.setCurrentIndex(0)
-        stackSwitchDuration = 2500
-        QTimer.singleShot(stackSwitchDuration, lambda: self.mainStack.setCurrentIndex(1))
+        def switchStack():
+            self.mainStack.setCurrentIndex(1)
+            self.splashScreen.close()
+            self.dashboard.calibrateAnimation()
+
+        QTimer.singleShot(2500, switchStack)
+
 
 
 if __name__ == '__main__':
@@ -38,15 +44,10 @@ if __name__ == '__main__':
     app.setStyleSheet("""
         QWidget {
             background-color: black; 
-            color: white; /* Adding a default text color */
+            color: #DAF1DE;
         }
         QLabel {
-            background-color: transparent; /* Ensure labels don't have a black background unless intended */
-        }
-        QPushButton {
-            background-color: #555;
-            color: white;
-            border: 1px solid #777;
+            background-color: transparent;
         }
     """)
     logo_path = "LOGO.png"

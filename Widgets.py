@@ -128,22 +128,6 @@ class DialGauge(QWidget):
         painter.setFont(font)
         painter.drawText(-50, 70, 100, 20, Qt.AlignCenter, self.unit)
 
-
-class progress_bar(QProgressBar):
-    def __init__(self, parent=None, max_val = 100, format=None):
-        super().__init__(parent)
-        self.progressbar = QProgressBar(self)
-        self.progressbar.setRange(0, max_val)
-        self.progressbar.setFormat(format)
-        self.progressbar.setTextVisible(True)
-        self.progressbar.setOrientation(Qt.Horizontal)
-        #self.progressbar.setMinimumWidth(25)
-        #self.progressbar.setMinimumWidth(700)
-
-    def setValue(self, value):
-        self.progressbar.setValue(value)
-
-
 class FuelGauge(QWidget):
     """A custom widget to display fuel level as a **vertical** color-changing rectangle."""
     def __init__(self, min_val=0, max_val=100, parent=None, x=432 , y=60):
@@ -217,10 +201,6 @@ class FuelGauge(QWidget):
 
 
 class ThrottleBar(QWidget):
-    """
-    A custom horizontal bar widget representing throttle level,
-    with color changing based on the value.
-    """
     def __init__(self, parent = None, min_val=0, max_val=100):
         super().__init__(parent)
         self.min_val = min_val

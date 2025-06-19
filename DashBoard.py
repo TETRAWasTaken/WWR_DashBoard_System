@@ -6,9 +6,9 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLa
 from PyQt5.QtCore import Qt, QTimer, QRect
 from PyQt5.QtGui import QPainter, QPen, QColor, QFont, QPixmap
 from Widgets import FuelGauge, DialGauge, ThrottleBar
-from Widgets import progress_bar
 from Widgets import FuelGauge
 import math
+import time
 
 # Global Variables
 MAX_RPM = 6000
@@ -21,8 +21,7 @@ class Dashboard(QWidget):
         self.logo_path = logo_path
 
         self.initUI()
-        self.initData()
-        self.initTimer()
+        self.calibrateAnimation()
 
     def initUI(self):
         # Main layout
@@ -93,7 +92,7 @@ class Dashboard(QWidget):
         datavaluelayout = QGridLayout()
         mainLayout.addLayout(datavaluelayout, 4, 0, 1, 4)
 
-        self.batteryVol = QLabel("Loading..")
+        self.batteryVol = QLabel("")
         self.batterylabel = QLabel("Battery Vol.")
         datavaluelayout.addWidget(self.batterylabel, 0, 0)
         datavaluelayout.addWidget(self.batteryVol, 1, 0)
@@ -101,7 +100,7 @@ class Dashboard(QWidget):
         self.batteryVol.setAlignment(Qt.AlignCenter)
         self.batteryVol.setStyleSheet("font-size: 20px; color: White;")
 
-        self.coolantTemp = QLabel("Loading..")
+        self.coolantTemp = QLabel("")
         self.coolantlabel = QLabel("Coolant Temp.")
         datavaluelayout.addWidget(self.coolantlabel, 0, 1)
         datavaluelayout.addWidget(self.coolantTemp, 1, 1)
@@ -109,7 +108,7 @@ class Dashboard(QWidget):
         self.coolantTemp.setAlignment(Qt.AlignCenter)
         self.coolantTemp.setStyleSheet("font-size: 20px; color: White;")
 
-        self.brakePressure = QLabel("Loading..")
+        self.brakePressure = QLabel("")
         self.brakePressureLabel = QLabel("Brake Pressure")
         datavaluelayout.addWidget(self.brakePressureLabel, 0, 2)
         datavaluelayout.addWidget(self.brakePressure, 1, 2)
@@ -117,7 +116,7 @@ class Dashboard(QWidget):
         self.brakePressure.setAlignment(Qt.AlignCenter)
         self.brakePressure.setStyleSheet("font-size: 20px; color: White;")
 
-        self.oilLevel = QLabel("Loading..")
+        self.oilLevel = QLabel("")
         self.oilLevelLabel = QLabel("Oil Level")
         datavaluelayout.addWidget(self.oilLevelLabel, 0, 3)
         datavaluelayout.addWidget(self.oilLevel, 1, 3)
@@ -128,7 +127,7 @@ class Dashboard(QWidget):
 
         # Status Label
         self.statusLabel = QLabel("Status: Running")
-        mainLayout.addWidget(self.statusLabel, 5, 0)
+        mainLayout.addWidget(self.statusLabel, 5, 1)
         self.statusLabel.setAlignment(Qt.AlignCenter)
         self.statusLabel.setStyleSheet("font-size: 20px; color: green;")
 
@@ -141,60 +140,63 @@ class Dashboard(QWidget):
         mainLayout.setRowStretch(3, 0)
 
         self.show()
-
-    def initData(self):
-        # Initial data values
-        self.speed = 0
-        self.rpm = 0
-        self.fuel = 100
-        self.throttle = 100
-        self.batteryVolval = 0
-        self.coolantTempval = 0
-        self.brakePressureval = 0
-        self.oilLevelval = 0
-
-    def initTimer(self):
-        # Timer for updating data
+        
+    def calibrateAnimation(self):
         self.batteryVol.setStyleSheet("font-size: 60px; color: White;")
         self.coolantTemp.setStyleSheet("font-size: 60px; color: White;")
         self.brakePressure.setStyleSheet("font-size: 60px; color: White;")
         self.oilLevel.setStyleSheet("font-size: 60px; color: White;")
-        self.timer = QTimer()
-        self.timer.setInterval(16)  # Update every second
-        self.timer.timeout.connect(self.updateData)
-        self.fuel_change = -5
-        self.timer.start()
+
+        self.calibration_timer = QTimer()
+        self.calibration_timer.setInterval(16)
+        self.calibration_phase = 0
+        self.calibration_value = 0
+        self.gear = "N"
+        self.count = 0
+
+        def update_calibration():
+            if self.calibration_phase == 0:  # Going up
+                self.calibration_value += 1.6
+                self.count += 1
+                self.speed = round(self.calibration_value * MAX_SPEED / 100, 1)
+                self.rpm = round(self.calibration_value * MAX_RPM / 100000, 1)
+                self.throttle = round(self.calibration_value, 2)
+                self.fuel = round(self.calibration_value, 2)
+                self.batteryVolval = round(self.calibration_value / 10, 2)
+                self.coolantTempval = round(self.calibration_value, 2)
+                self.brakePressureval = round(self.calibration_value, 2)
+                self.oilLevelval = round(self.calibration_value, 2)
+                if self.count % 11 == 0:
+                    self.gear = int(self.count // 11)
+                self.updateData()
+                if self.calibration_value >= 100:
+                    self.calibration_phase = 1
+            else:  # Going down
+                self.calibration_value -= 1.6
+                self.count -= 1
+                self.speed = round(self.calibration_value * MAX_SPEED / 100, 1)
+                self.rpm = round(self.calibration_value * MAX_RPM / 100000, 1)
+                self.throttle = round(self.calibration_value, 2)
+                self.fuel = round(self.calibration_value, 2)
+                self.batteryVolval = round(self.calibration_value / 10, 2)
+                self.coolantTempval = round(self.calibration_value, 2)
+                self.brakePressureval = round(self.calibration_value, 2)
+                self.oilLevelval = round(self.calibration_value, 2)
+                if self.count % 11 == 0:
+                    self.gear = int(self.count // 11)
+                self.updateData()
+                if self.calibration_value <= 0:
+                    self.reset()
+                    self.calibration_timer.stop()
+
+        self.calibration_timer.timeout.connect(update_calibration)
+        self.calibration_timer.start()
 
     def updateData(self):
-        # Simulate data changes
-        self.speed += 0.1
-        self.rpm += 0.01
-        self.throttle -= 0.05
-        self.batteryVolval += 0.1
-        self.coolantTempval += 0.1
-        self.brakePressureval += 0.1
-        self.oilLevelval += 0.1
-
-        self.batteryVolval = round(self.batteryVolval,2)
-        self.coolantTempval = round(self.coolantTempval,2)
-        self.brakePressureval = round(self.brakePressureval,2)
-        self.oilLevelval = round(self.oilLevelval,2)
-
-        # Clamp values to reasonable ranges
-        self.speed = min(self.speed, 200)
-        self.rpm = min(self.rpm, MAX_RPM)
-        self.throttle = max(self.throttle, 0)
-
-        # Update display
         self.speed_dial.setValue(self.speed)
         self.rpm_dial.setValue(self.rpm)
         self.throttleBar.setValue(self.throttle)
-
-        self.fuel_gauge.setValue(self.fuel_gauge.value() + self.fuel_change)
-        if self.fuel_gauge.value() > 95:
-            self.fuel_change = -1
-        elif self.fuel_gauge.value() < 5:
-            self.fuel_change = 1
+        self.fuel_gauge.setValue(self.fuel)
 
         if self.fuel < 20:
             self.statusLabel.setText("Status: Low Fuel")
@@ -210,21 +212,18 @@ class Dashboard(QWidget):
         self.coolantTemp.setText(str(self.coolantTempval) + " C")
         self.brakePressure.setText(str(self.brakePressureval) + " kPa")
         self.oilLevel.setText(str(self.oilLevelval))
+        self.gearPosition.setText(str(self.gear))
 
-    def Tthread(self, start, end):
-        range = (end - start)
-        inc = range/60
-        timer = threading.Thread(target=self.animator, args=(range, inc))
-        timer.start()
-        return timer
+    def reset(self):
+        self.batteryVol.setStyleSheet("font-size: 20px; color: White;")
+        self.coolantTemp.setStyleSheet("font-size: 20px; color: White;")
+        self.brakePressure.setStyleSheet("font-size: 20px; color: White;")
+        self.oilLevel.setStyleSheet("font-size: 20px; color: White;")
 
-    def animator(self, range, inc):
-        self.Timer = QTimer()
-        self.Timer.setInterval(16)
-        val = range + inc
-        return val
+        self.batteryVol.setText("Loading...")
+        self.coolantTemp.setText("Loading...")
+        self.brakePressure.setText("Loading...")
+        self.oilLevel.setText("Loading...")
+        self.gearPosition.setText("N")
 
-    def WindowProperties(self):
-        self.setWindowTitle('WWR')
-        self.setGeometry(0, 0, 1280, 720)
-        self.show()
+

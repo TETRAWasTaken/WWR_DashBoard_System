@@ -16,6 +16,7 @@ class SplashScreen(QWidget):
             self.pixmap = QPixmap(logo_path)
             if self.pixmap.isNull():
                 raise FileNotFoundError(f"Logo file not found: {logo_path}")
+            self.pixmap = self.pixmap.scaledToWidth(550, Qt.SmoothTransformation)
             self.label = QLabel(self)
             self.label.setPixmap(self.pixmap)
             self.Layout.addWidget(self.label)
