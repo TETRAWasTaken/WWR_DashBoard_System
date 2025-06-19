@@ -1,10 +1,8 @@
-import sys
-import time
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QLabel, QVBoxLayout, QStackedWidget
+    QWidget, QLabel, QVBoxLayout
 )
-from PyQt5.QtGui import QPixmap, QFont, QColor, QPainter # QPainter for drawing on QPixmap fallback
-from PyQt5.QtCore import Qt, QTimer
+
 
 class SplashScreen(QWidget):
     def __init__(self, logo_path, parent=None):

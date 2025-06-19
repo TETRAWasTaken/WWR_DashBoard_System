@@ -1,14 +1,10 @@
 import DashBoard as DashBoard
 import SplashScreen as SplashScreen
 import sys
-import time
 from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QLabel, QVBoxLayout, QStackedWidget
+    QApplication, QMainWindow, QStackedWidget
 )
-from PyQt5.QtGui import QPixmap, QFont, QColor, QPainter # QPainter for drawing on QPixmap fallback
-from PyQt5.QtCore import Qt, QTimer
-import PyQt5.QtWidgets
-import threading
+from PyQt5.QtCore import QTimer
 
 class App(QMainWindow):
     def __init__(self, logo_path):

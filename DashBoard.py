@@ -1,14 +1,10 @@
-import sys
-import threading
-
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QProgressBar, QGridLayout, \
+from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtGui import QFont, QPixmap
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QGridLayout, \
     QMessageBox
-from PyQt5.QtCore import Qt, QTimer, QRect
-from PyQt5.QtGui import QPainter, QPen, QColor, QFont, QPixmap
-from Widgets import FuelGauge, DialGauge, ThrottleBar
+
+from Widgets import DialGauge, ThrottleBar
 from Widgets import FuelGauge
-import math
-import time
 
 # Global Variables
 MAX_RPM = 6000

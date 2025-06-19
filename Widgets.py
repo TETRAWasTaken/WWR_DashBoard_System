@@ -1,8 +1,8 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QProgressBar, QSizePolicy
-from PyQt5.QtCore import Qt, QTimer, QRect, QPointF, QRectF
-from PyQt5.QtGui import QPainter, QPen, QColor, QFont, QConicalGradient, QBrush, QPolygonF
 import math
+from PyQt5.QtCore import Qt, QPointF, QRectF
+from PyQt5.QtGui import QPainter, QPen, QColor, QFont, QBrush, QPolygonF
+from PyQt5.QtWidgets import QWidget, QSizePolicy
+
 
 class DialGauge(QWidget):
     """A custom widget to display a value as a dial gauge."""
