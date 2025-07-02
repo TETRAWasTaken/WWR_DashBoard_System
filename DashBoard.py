@@ -7,8 +7,8 @@ from Widgets import DialGauge, ThrottleBar
 from Widgets import FuelGauge
 
 # Global Variables
-MAX_RPM = 6000
-MAX_SPEED = 200
+MAX_RPM = 15000
+MAX_SPEED = 120
 MAX_FUEL = 100
 
 class Dashboard(QWidget):
