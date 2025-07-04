@@ -136,7 +136,8 @@ class FuelGauge(QWidget):
         self.max_val = max_val
         self._value = max_val
         # Adjust minimum size for vertical orientation
-        self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding) # Fixed width, expanding height
+        self.setMinimumWidth(50)
+        self.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Expanding) # Fixed width, expanding height
 
 
     def setValue(self, value):

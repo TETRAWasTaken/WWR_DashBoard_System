@@ -80,7 +80,7 @@ class Dashboard(QWidget):
 
         # Fuel Gauge
         self.fuel_gauge = FuelGauge(0, MAX_FUEL)
-        mainLayout.addWidget(self.fuel_gauge, 1, 2, 1, 2)
+        mainLayout.addWidget(self.fuel_gauge, 1, 2)
 
         # Throttle bar
         self.throttleBar = ThrottleBar(self, min_val=0, max_val=MAX_FUEL)
@@ -133,7 +133,7 @@ class Dashboard(QWidget):
         # Row And Column STrech Adjusments
         mainLayout.setColumnStretch(0, 1)
         mainLayout.setColumnStretch(1, 1)
-        mainLayout.setColumnStretch(2, 1)
+        #mainLayout.setColumnStretch(2, 1)
         mainLayout.setRowStretch(1, 1)
         mainLayout.setRowStretch(2, 1)
         mainLayout.setRowStretch(3, 0)
