@@ -20,7 +20,7 @@ class Dashboard(QWidget):
         self.calibrateAnimation()
 
     def initUI(self):
-        self.setFixedSize(800, 460)
+        self.setFixedSize(800, 480)
 
         # Main layout
         mainLayout = QGridLayout()

@@ -16,8 +16,8 @@ class App(QMainWindow):
         try:
             self.setWindowTitle("Wrench Weilders Racing")
             self.setWindowFlag(Qt.FramelessWindowHint)
-            self.setGeometry(0, 0, 800, 460)
-            self.setFixedSize(800, 460)
+            self.setGeometry(0, 0, 800, 480)
+            self.setFixedSize(800, 480)
 
             print("Initiating MainStack")
 
@@ -43,7 +43,7 @@ class App(QMainWindow):
                 print("Calibration Animation Completed")
                 print("Waiting For Sensory Input...")
 
-            QTimer.singleShot(500, switchStack)
+            QTimer.singleShot(2500, switchStack)
 
         except Exception as e:
             print(f"Error loading dashboard: {e}")
