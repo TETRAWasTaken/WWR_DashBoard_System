@@ -130,14 +130,13 @@ class DialGauge(QWidget):
 
 class FuelGauge(QWidget):
     """A custom widget to display fuel level as a **vertical** color-changing rectangle."""
-    def __init__(self, min_val=0, max_val=100, parent=None, x=432 , y=60):
+    def __init__(self, min_val=0, max_val=100, parent=None):
         super().__init__(parent)
         self.min_val = min_val
         self.max_val = max_val
         self._value = max_val
         # Adjust minimum size for vertical orientation
-        self.setMaximumHeight(x)
-        self.setMaximumWidth(y)
+        self.setMaximumWidth(50)
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding) # Fixed width, expanding height
 
 

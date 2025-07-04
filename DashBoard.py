@@ -62,7 +62,7 @@ class Dashboard(QWidget):
         self.gearPositionLabel.setAlignment(Qt.AlignCenter)
         gearLayout.addWidget(self.gearPositionLabel, 0, 0)
         gearLayout.addWidget(self.gearPosition, 1, 0, 2, 1)
-        self.gearPosition.setStyleSheet("font-size: 80px; color: White;") # Reduced font size
+        self.gearPosition.setStyleSheet("font-size: 100px; color: White;") # Reduced font size
         gearLayout.setRowStretch(1, 1)
         speedRpmLayout.addLayout(gearLayout, 0, 1)
 
@@ -80,7 +80,7 @@ class Dashboard(QWidget):
 
         # Fuel Gauge
         self.fuel_gauge = FuelGauge(0, MAX_FUEL)
-        mainLayout.addWidget(self.fuel_gauge, 1, 2, 2, 1)
+        mainLayout.addWidget(self.fuel_gauge, 1, 2)
 
         # Throttle bar
         self.throttleBar = ThrottleBar(self, min_val=0, max_val=MAX_FUEL)
