@@ -47,7 +47,7 @@ class Dashboard(QWidget):
             tag = ' '+tag
         self.tagline = QLabel(tag)
         self.tagline.setAlignment(Qt.AlignCenter)
-        self.tagline.setFont(QFont('Arial', 12, QFont.Bold)) # Reduced font size
+        self.tagline.setFont(QFont('Arial', 10, QFont.Bold)) # Reduced font size
         miscellaneousLayout.addWidget(self.tagline, 0, 1)
 
         # Speed and RPM section
