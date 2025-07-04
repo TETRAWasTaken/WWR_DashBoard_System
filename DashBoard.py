@@ -43,7 +43,7 @@ class Dashboard(QWidget):
             QMessageBox.critical(self, "Error", "Logo not found")
 
         tag = "Designed To Perform, Manufactured to Win"
-        for i in range(40):
+        for i in range(35):
             tag = ' '+tag
         self.tagline = QLabel(tag)
         self.tagline.setAlignment(Qt.AlignCenter)
