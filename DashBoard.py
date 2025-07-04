@@ -20,19 +20,21 @@ class Dashboard(QWidget):
         self.calibrateAnimation()
 
     def initUI(self):
+        self.setFixedSize(800, 480)
+
         # Main layout
         mainLayout = QGridLayout()
         self.setLayout(mainLayout)
 
         # WWR Logo anf tagline
         miscellaneousLayout = QGridLayout()
-        miscellaneousLayout.setSpacing(150)
+        miscellaneousLayout.setSpacing(30) # Reduced spacing
         mainLayout.addLayout(miscellaneousLayout, 0, 0)
 
         try:
             self.logo = QLabel(self)
             pixmap = QPixmap(self.logo_path)
-            pixmap = pixmap.scaledToWidth(150, Qt.SmoothTransformation)
+            pixmap = pixmap.scaledToWidth(80, Qt.SmoothTransformation) # Reduced logo width
             self.logo.setPixmap(pixmap)
             self.logo.setAlignment(Qt.AlignLeft | Qt.AlignTop)
             miscellaneousLayout.addWidget(self.logo, 0, 0)
@@ -41,11 +43,11 @@ class Dashboard(QWidget):
             QMessageBox.critical(self, "Error", "Logo not found")
 
         tag = "Designed To Perform, Manufactured to Win"
-        for i in range(20):
+        for i in range(40):
             tag = ' '+tag
         self.tagline = QLabel(tag)
         self.tagline.setAlignment(Qt.AlignCenter)
-        self.tagline.setFont(QFont('Arial', 20, QFont.Bold))
+        self.tagline.setFont(QFont('Arial', 12, QFont.Bold)) # Reduced font size
         miscellaneousLayout.addWidget(self.tagline, 0, 1)
 
         # Speed and RPM section
@@ -60,20 +62,20 @@ class Dashboard(QWidget):
         self.gearPositionLabel.setAlignment(Qt.AlignCenter)
         gearLayout.addWidget(self.gearPositionLabel, 0, 0)
         gearLayout.addWidget(self.gearPosition, 1, 0, 2, 1)
-        self.gearPosition.setStyleSheet("font-size: 200px; color: White;")
+        self.gearPosition.setStyleSheet("font-size: 80px; color: White;") # Reduced font size
         gearLayout.setRowStretch(1, 1)
         speedRpmLayout.addLayout(gearLayout, 0, 1)
 
         # Speed display
         speedLayout = QVBoxLayout()
         speedRpmLayout.addLayout(speedLayout, 0, 0)
-        self.speed_dial = DialGauge('Speed', 'KM/H', 0, MAX_SPEED, minx=450, miny=450)
+        self.speed_dial = DialGauge('Speed', 'KM/H', 0, MAX_SPEED, minx=220, miny=200) # Reduced minx, miny
         speedLayout.addWidget(self.speed_dial)
 
         # RPM display
         rpmLayout = QVBoxLayout()
         speedRpmLayout.addLayout(rpmLayout, 0, 2)
-        self.rpm_dial = DialGauge('RPM', 'x1000', 0, MAX_RPM/1000, minx=400, miny=400)
+        self.rpm_dial = DialGauge('RPM', 'x1000', 0, MAX_RPM/1000, minx=220, miny=200) # Reduced minx, miny
         rpmLayout.addWidget(self.rpm_dial)
 
         # Fuel Gauge
@@ -94,7 +96,7 @@ class Dashboard(QWidget):
         datavaluelayout.addWidget(self.batteryVol, 1, 0)
         self.batterylabel.setAlignment(Qt.AlignCenter)
         self.batteryVol.setAlignment(Qt.AlignCenter)
-        self.batteryVol.setStyleSheet("font-size: 20px; color: White;")
+        self.batteryVol.setStyleSheet("font-size: 16px; color: White;") # Adjusted to fit
 
         self.coolantTemp = QLabel("")
         self.coolantlabel = QLabel("Coolant Temp.")
@@ -102,7 +104,7 @@ class Dashboard(QWidget):
         datavaluelayout.addWidget(self.coolantTemp, 1, 1)
         self.coolantlabel.setAlignment(Qt.AlignCenter)
         self.coolantTemp.setAlignment(Qt.AlignCenter)
-        self.coolantTemp.setStyleSheet("font-size: 20px; color: White;")
+        self.coolantTemp.setStyleSheet("font-size: 16px; color: White;") # Adjusted to fit
 
         self.brakePressure = QLabel("")
         self.brakePressureLabel = QLabel("Brake Pressure")
@@ -110,7 +112,7 @@ class Dashboard(QWidget):
         datavaluelayout.addWidget(self.brakePressure, 1, 2)
         self.brakePressureLabel.setAlignment(Qt.AlignCenter)
         self.brakePressure.setAlignment(Qt.AlignCenter)
-        self.brakePressure.setStyleSheet("font-size: 20px; color: White;")
+        self.brakePressure.setStyleSheet("font-size: 16px; color: White;") # Adjusted to fit
 
         self.oilLevel = QLabel("")
         self.oilLevelLabel = QLabel("Oil Level")
@@ -118,14 +120,15 @@ class Dashboard(QWidget):
         datavaluelayout.addWidget(self.oilLevel, 1, 3)
         self.oilLevelLabel.setAlignment(Qt.AlignCenter)
         self.oilLevel.setAlignment(Qt.AlignCenter)
-        self.oilLevel.setStyleSheet("font-size: 20px; color: White;")
+        self.oilLevel.setStyleSheet("font-size: 16px; color: White;") # Adjusted to fit
 
 
         # Status Label
         self.statusLabel = QLabel("Status: Running")
         mainLayout.addWidget(self.statusLabel, 5, 1)
         self.statusLabel.setAlignment(Qt.AlignCenter)
-        self.statusLabel.setStyleSheet("font-size: 20px; color: green;")
+        self.statusLabel.setFont(QFont('Arial', 14, QFont.Bold)) # Adjusted font size
+        self.statusLabel.setStyleSheet("color: green;")
 
         # Row And Column STrech Adjusments
         mainLayout.setColumnStretch(0, 1)
@@ -138,10 +141,11 @@ class Dashboard(QWidget):
         self.show()
         
     def calibrateAnimation(self):
-        self.batteryVol.setStyleSheet("font-size: 60px; color: White;")
-        self.coolantTemp.setStyleSheet("font-size: 60px; color: White;")
-        self.brakePressure.setStyleSheet("font-size: 60px; color: White;")
-        self.oilLevel.setStyleSheet("font-size: 60px; color: White;")
+        # Adjusted font size for calibration animation
+        self.batteryVol.setStyleSheet("font-size: 30px; color: White;")
+        self.coolantTemp.setStyleSheet("font-size: 30px; color: White;")
+        self.brakePressure.setStyleSheet("font-size: 30px; color: White;")
+        self.oilLevel.setStyleSheet("font-size: 30px; color: White;")
 
         self.calibration_timer = QTimer()
         self.calibration_timer.setInterval(16)
@@ -211,15 +215,14 @@ class Dashboard(QWidget):
         self.gearPosition.setText(str(self.gear))
 
     def reset(self):
-        self.batteryVol.setStyleSheet("font-size: 20px; color: White;")
-        self.coolantTemp.setStyleSheet("font-size: 20px; color: White;")
-        self.brakePressure.setStyleSheet("font-size: 20px; color: White;")
-        self.oilLevel.setStyleSheet("font-size: 20px; color: White;")
+        # Ensure reset font sizes are consistent with the new display
+        self.batteryVol.setStyleSheet("font-size: 16px; color: White;")
+        self.coolantTemp.setStyleSheet("font-size: 16px; color: White;")
+        self.brakePressure.setStyleSheet("font-size: 16px; color: White;")
+        self.oilLevel.setStyleSheet("font-size: 16px; color: White;")
 
         self.batteryVol.setText("Loading...")
         self.coolantTemp.setText("Loading...")
         self.brakePressure.setText("Loading...")
         self.oilLevel.setText("Loading...")
         self.gearPosition.setText("N")
-
-

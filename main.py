@@ -7,32 +7,45 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import QTimer
 
+sys.stdout.reconfigure(line_buffering=True)
+sys.stderr.reconfigure(line_buffering=True)
+
 class App(QMainWindow):
     def __init__(self, logo_path):
         super().__init__()
-        self.setWindowTitle("Wrench Weilders Racing")
-        self.setGeometry(0, 0, 1280, 720)
-        self.setFixedSize(1280, 720)
+        try:
+            self.setWindowTitle("Wrench Weilders Racing")
+            self.setGeometry(0, 0, 800, 480)
+            self.setFixedSize(800, 480)
 
-        self.mainStack = QStackedWidget()
-        self.setCentralWidget(self.mainStack)
+            print("Initiating MainStack")
 
-        self.splashScreen = SplashScreen.SplashScreen(logo_path)
-        self.mainStack.addWidget(self.splashScreen)
+            self.mainStack = QStackedWidget()
+            self.setCentralWidget(self.mainStack)
 
-        self.mainStack.setCurrentIndex(0)
+            print("Splash Screen Initiated")
 
-        self.dashboard = DashBoard.Dashboard(logo_path)
-        self.mainStack.addWidget(self.dashboard)
+            self.splashScreen = SplashScreen.SplashScreen(logo_path)
+            self.mainStack.addWidget(self.splashScreen)
 
-        def switchStack():
-            self.mainStack.setCurrentIndex(1)
-            self.splashScreen.close()
-            self.dashboard.calibrateAnimation()
+            self.mainStack.setCurrentIndex(0)
 
-        QTimer.singleShot(2500, switchStack)
+            self.dashboard = DashBoard.Dashboard(logo_path)
+            self.mainStack.addWidget(self.dashboard)
 
+            def switchStack():
+                print("Dashboard Initiated")
+                self.mainStack.setCurrentIndex(1)
+                self.splashScreen.close()
+                print("Running Calibration Animation")
+                self.dashboard.calibrateAnimation()
+                print("Calibration Animation Completed")
+                print("Waiting For Sensory Input...")
 
+            QTimer.singleShot(2500, switchStack)
+
+        except Exception as e:
+            print(f"Error loading dashboard: {e}")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
