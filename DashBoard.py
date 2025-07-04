@@ -80,9 +80,9 @@ class Dashboard(QWidget):
 
         # Fuel Gauge
         self.fuel_gauge = FuelGauge(0, MAX_FUEL)
-        mainLayout.addWidget(self.fuel_gauge, 1, 2)
+        mainLayout.addWidget(self.fuel_gauge, 1, 2, 2, 1)
 
-        # Progress bars
+        # Throttle bar
         self.throttleBar = ThrottleBar(self, min_val=0, max_val=MAX_FUEL)
         mainLayout.addWidget(self.throttleBar, 2, 0, 1, 2)
 
