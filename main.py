@@ -61,7 +61,7 @@ if __name__ == '__main__':
             background-color: transparent;
         }
     """)
-    logo_path = "LOGO.jpeg"
+    logo_path = "/home/wwr_electricals/WWR_Dashboard/LOGO.jpeg"
     window = App(logo_path)
     window.show()
     sys.exit(app.exec_())
