@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import DashBoard as DashBoard
 import SplashScreen as SplashScreen
 import sys
