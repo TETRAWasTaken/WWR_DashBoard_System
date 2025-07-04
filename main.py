@@ -5,7 +5,7 @@ import sys
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QStackedWidget
 )
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, Qt
 
 sys.stdout.reconfigure(line_buffering=True)
 sys.stderr.reconfigure(line_buffering=True)
@@ -15,8 +15,9 @@ class App(QMainWindow):
         super().__init__()
         try:
             self.setWindowTitle("Wrench Weilders Racing")
-            self.setGeometry(0, 0, 800, 480)
-            self.setFixedSize(800, 480)
+            self.setWindowFlag(Qt.FramelessWindowHint)
+            self.setGeometry(0, 0, 800, 460)
+            self.setFixedSize(800, 460)
 
             print("Initiating MainStack")
 
