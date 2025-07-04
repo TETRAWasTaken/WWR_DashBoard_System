@@ -184,7 +184,7 @@ class FuelGauge(QWidget):
 
         # Draw Title at the bottom
         painter.setPen(Qt.white) # Changed title color for dark background
-        font = QFont('Arial', 16, QFont.Bold) # Smaller font for title
+        font = QFont('Arial', 12, QFont.Bold) # Smaller font for title
         painter.setFont(font)
         title_rect = QRectF(rect.left(), rect.bottom() + 5, rect.width(), 15)
         painter.drawText(title_rect, Qt.AlignCenter, "Fuel")
@@ -285,7 +285,7 @@ class ThrottleBar(QWidget):
 
         # Draw Title at the bottom
         painter.setPen(Qt.white) # Black title text
-        font = QFont('Arial', 16, QFont.Bold) # Regular weight font for title
+        font = QFont('Arial', 12, QFont.Bold) # Regular weight font for title
         painter.setFont(font)
         # Position title rect below the main bar rect
         title_rect = QRectF(rect.left(), rect.bottom() + 3, rect.width(), 15)
