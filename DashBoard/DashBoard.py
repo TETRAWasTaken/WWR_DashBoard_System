@@ -3,7 +3,7 @@ from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QGridLayout, \
     QMessageBox
 
-from Widgets import DialGauge, ThrottleBar
+from Widgets import DialGauge
 from Widgets import FuelGauge
 
 # Global Variables
