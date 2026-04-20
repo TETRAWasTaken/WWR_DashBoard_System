@@ -3,8 +3,12 @@ from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QGridLayout, \
     QMessageBox
 
-from Widgets import DialGauge
-from Widgets import FuelGauge
+try:
+    from .Widgets import DialGauge
+    from .Widgets import FuelGauge
+except ImportError:
+    from Widgets import DialGauge
+    from Widgets import FuelGauge
 
 # Global Variables
 MAX_RPM = 15000
