@@ -82,7 +82,7 @@ if __name__ == '__main__':
             background-color: transparent;
         }
     """)
-    logo_path = "LOGO.jpeg"
+    logo_path = r"C:\Users\Omkarsai Sarage\OneDrive\Documents\Clubs\WWR\WWR_DashBoard_System\src\DashBoard\LOGO.jpeg"
     window = App(logo_path)
     window.show()
     sys.exit(app.exec_())
