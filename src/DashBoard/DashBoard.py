@@ -3,12 +3,15 @@ from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QGridLayout, \
     QMessageBox
 
-from Widgets import DialGauge, ThrottleBar
-from Widgets import FuelGauge
+try:
+    from .Widgets import DialGauge
+    from .Widgets import FuelGauge
+except ImportError:
+    from Widgets import DialGauge
+    from Widgets import FuelGauge
 
 # Global Variables
 MAX_RPM = 15000
-MAX_SPEED = 120
 MAX_FUEL = 100
 
 class Dashboard(QWidget):
@@ -42,17 +45,16 @@ class Dashboard(QWidget):
         except Exception as e:
             QMessageBox.critical(self, "Error", "Logo not found")
 
-        tag = "Designed To Perform, Manufactured to Win"
-        for i in range(25):
-            tag = ' '+tag
-        self.tagline = QLabel(tag)
-        self.tagline.setAlignment(Qt.AlignCenter)
-        self.tagline.setFont(QFont('Arial', 10, QFont.Bold)) # Reduced font size
-        miscellaneousLayout.addWidget(self.tagline, 0, 1)
+        # Status Label
+        self.statusLabel = QLabel("Status: Running")
+        mainLayout.addWidget(self.statusLabel, 0, 1)
+        self.statusLabel.setAlignment(Qt.AlignCenter)
+        self.statusLabel.setFont(QFont('Arial', 20, QFont.Bold))  # Adjusted font size
+        self.statusLabel.setStyleSheet("color: green;")
 
-        # Speed and RPM section
-        speedRpmLayout = QGridLayout()
-        mainLayout.addLayout(speedRpmLayout, 1, 0, 1, 2)
+        # Gear and RPM section
+        GearRpmLayout = QGridLayout()
+        mainLayout.addLayout(GearRpmLayout, 1, 0, 1, 2)
 
         # Gear Display
         gearLayout = QGridLayout()
@@ -61,42 +63,24 @@ class Dashboard(QWidget):
         self.gearPosition.setAlignment(Qt.AlignCenter)
         self.gearPositionLabel.setAlignment(Qt.AlignCenter)
         gearLayout.addWidget(self.gearPositionLabel, 0, 0)
-        gearLayout.addWidget(self.gearPosition, 1, 0, 2, 1)
-        self.gearPosition.setStyleSheet("font-size: 100px; color: White;") # Reduced font size
+        gearLayout.addWidget(self.gearPosition, 1, 0)
+        self.gearPosition.setStyleSheet("font-size: 160px; color: White;") # Reduced font size
         gearLayout.setRowStretch(1, 1)
-        speedRpmLayout.addLayout(gearLayout, 0, 1)
-
-        # Speed display
-        speedLayout = QVBoxLayout()
-        speedRpmLayout.addLayout(speedLayout, 0, 0)
-        self.speed_dial = DialGauge('Speed', 'KM/H', 0, MAX_SPEED, minx=220, miny=200) # Reduced minx, miny
-        speedLayout.addWidget(self.speed_dial)
+        GearRpmLayout.addLayout(gearLayout, 0, 1)
 
         # RPM display
         rpmLayout = QVBoxLayout()
-        speedRpmLayout.addLayout(rpmLayout, 0, 2)
-        self.rpm_dial = DialGauge('RPM', 'x1000', 0, MAX_RPM/1000, minx=220, miny=200) # Reduced minx, miny
+        GearRpmLayout.addLayout(rpmLayout, 0, 0)
+        self.rpm_dial = DialGauge('RPM', 'x1000', 0, MAX_RPM/1000, minx=360, miny=360)
         rpmLayout.addWidget(self.rpm_dial)
 
         # Fuel Gauge
         self.fuel_gauge = FuelGauge(0, MAX_FUEL)
-        mainLayout.addWidget(self.fuel_gauge, 1, 2)
-
-        # Throttle bar
-        self.throttleBar = ThrottleBar(self, min_val=0, max_val=MAX_FUEL)
-        mainLayout.addWidget(self.throttleBar, 2, 0, 1, 2)
+        mainLayout.addWidget(self.fuel_gauge, 1, 3)
 
         # Data Values
         datavaluelayout = QGridLayout()
-        mainLayout.addLayout(datavaluelayout, 4, 0, 1, 4)
-
-        self.batteryVol = QLabel("")
-        self.batterylabel = QLabel("Battery Vol.")
-        datavaluelayout.addWidget(self.batterylabel, 0, 0)
-        datavaluelayout.addWidget(self.batteryVol, 1, 0)
-        self.batterylabel.setAlignment(Qt.AlignCenter)
-        self.batteryVol.setAlignment(Qt.AlignCenter)
-        self.batteryVol.setStyleSheet("font-size: 16px; color: White;") # Adjusted to fit
+        mainLayout.addLayout(datavaluelayout, 2, 1)
 
         self.coolantTemp = QLabel("")
         self.coolantlabel = QLabel("Coolant Temp.")
@@ -106,46 +90,26 @@ class Dashboard(QWidget):
         self.coolantTemp.setAlignment(Qt.AlignCenter)
         self.coolantTemp.setStyleSheet("font-size: 16px; color: White;") # Adjusted to fit
 
-        self.brakePressure = QLabel("")
-        self.brakePressureLabel = QLabel("Brake Pressure")
-        datavaluelayout.addWidget(self.brakePressureLabel, 0, 2)
-        datavaluelayout.addWidget(self.brakePressure, 1, 2)
-        self.brakePressureLabel.setAlignment(Qt.AlignCenter)
-        self.brakePressure.setAlignment(Qt.AlignCenter)
-        self.brakePressure.setStyleSheet("font-size: 16px; color: White;") # Adjusted to fit
+        self.exhaustTemp = QLabel("")
+        self.exhaustTempLabel = QLabel("Exhaust Temp")
+        datavaluelayout.addWidget(self.exhaustTempLabel, 0, 2)
+        datavaluelayout.addWidget(self.exhaustTemp, 1, 2)
+        self.exhaustTempLabel.setAlignment(Qt.AlignCenter)
+        self.exhaustTemp.setAlignment(Qt.AlignCenter)
+        self.exhaustTemp.setStyleSheet("font-size: 16px; color: White;") # Adjusted to fit
 
-        self.oilLevel = QLabel("")
-        self.oilLevelLabel = QLabel("Oil Level")
-        datavaluelayout.addWidget(self.oilLevelLabel, 0, 3)
-        datavaluelayout.addWidget(self.oilLevel, 1, 3)
-        self.oilLevelLabel.setAlignment(Qt.AlignCenter)
-        self.oilLevel.setAlignment(Qt.AlignCenter)
-        self.oilLevel.setStyleSheet("font-size: 16px; color: White;") # Adjusted to fit
-
-
-        # Status Label
-        self.statusLabel = QLabel("Status: Running")
-        mainLayout.addWidget(self.statusLabel, 5, 1)
-        self.statusLabel.setAlignment(Qt.AlignCenter)
-        self.statusLabel.setFont(QFont('Arial', 14, QFont.Bold)) # Adjusted font size
-        self.statusLabel.setStyleSheet("color: green;")
-
-        # Row And Column STrech Adjusments
+        # Row And Column Strech Adjusments
         mainLayout.setColumnStretch(0, 1)
-        mainLayout.setColumnStretch(1, 1)
-        #mainLayout.setColumnStretch(2, 1)
+        mainLayout.setColumnStretch(1, 7)
         mainLayout.setRowStretch(1, 1)
         mainLayout.setRowStretch(2, 1)
-        mainLayout.setRowStretch(3, 0)
 
         self.show()
         
     def calibrateAnimation(self):
         # Adjusted font size for calibration animation
-        self.batteryVol.setStyleSheet("font-size: 30px; color: White;")
         self.coolantTemp.setStyleSheet("font-size: 30px; color: White;")
-        self.brakePressure.setStyleSheet("font-size: 30px; color: White;")
-        self.oilLevel.setStyleSheet("font-size: 30px; color: White;")
+        self.exhaustTemp.setStyleSheet("font-size: 30px; color: White;")
 
         self.calibration_timer = QTimer()
         self.calibration_timer.setInterval(16)
@@ -158,13 +122,10 @@ class Dashboard(QWidget):
             if self.calibration_phase == 0:  # Going up
                 self.calibration_value += 1.6
                 self.count += 1
-                self.speed = round(self.calibration_value * MAX_SPEED / 100, 1)
                 self.rpm = round(self.calibration_value * MAX_RPM / 100000, 1)
-                self.throttle = round(self.calibration_value, 2)
                 self.fuel = round(self.calibration_value, 2)
-                self.batteryVolval = round(self.calibration_value / 10, 2)
                 self.coolantTempval = round(self.calibration_value, 2)
-                self.brakePressureval = round(self.calibration_value, 2)
+                self.exhaustTempval = round(self.calibration_value, 2)
                 self.oilLevelval = round(self.calibration_value, 2)
                 if self.count % 11 == 0:
                     self.gear = int(self.count // 11)
@@ -174,13 +135,10 @@ class Dashboard(QWidget):
             else:  # Going down
                 self.calibration_value -= 1.6
                 self.count -= 1
-                self.speed = round(self.calibration_value * MAX_SPEED / 100, 1)
                 self.rpm = round(self.calibration_value * MAX_RPM / 100000, 1)
-                self.throttle = round(self.calibration_value, 2)
                 self.fuel = round(self.calibration_value, 2)
-                self.batteryVolval = round(self.calibration_value / 10, 2)
                 self.coolantTempval = round(self.calibration_value, 2)
-                self.brakePressureval = round(self.calibration_value, 2)
+                self.exhaustTempval = round(self.calibration_value, 2)
                 self.oilLevelval = round(self.calibration_value, 2)
                 if self.count % 11 == 0:
                     self.gear = int(self.count // 11)
@@ -193,36 +151,25 @@ class Dashboard(QWidget):
         self.calibration_timer.start()
 
     def updateData(self):
-        self.speed_dial.setValue(self.speed)
         self.rpm_dial.setValue(self.rpm)
-        self.throttleBar.setValue(self.throttle)
         self.fuel_gauge.setValue(self.fuel)
 
         if self.fuel < 20:
             self.statusLabel.setText("Status: Low Fuel")
             self.statusLabel.setStyleSheet("color: red;")
-        elif self.throttle < 15:
-            self.statusLabel.setText("Status: Low Battery")
-            self.statusLabel.setStyleSheet("color: red;")
         else:
             self.statusLabel.setText("Status: Running")
             self.statusLabel.setStyleSheet("color: green;")
 
-        self.batteryVol.setText(str(self.batteryVolval) + " V")
         self.coolantTemp.setText(str(self.coolantTempval) + " C")
-        self.brakePressure.setText(str(self.brakePressureval) + " kPa")
-        self.oilLevel.setText(str(self.oilLevelval))
+        self.exhaustTemp.setText(str(self.exhaustTempval) + " C")
         self.gearPosition.setText(str(self.gear))
 
     def reset(self):
         # Ensure reset font sizes are consistent with the new display
-        self.batteryVol.setStyleSheet("font-size: 16px; color: White;")
         self.coolantTemp.setStyleSheet("font-size: 16px; color: White;")
-        self.brakePressure.setStyleSheet("font-size: 16px; color: White;")
-        self.oilLevel.setStyleSheet("font-size: 16px; color: White;")
+        self.exhaustTemp.setStyleSheet("font-size: 16px; color: White;")
 
-        self.batteryVol.setText("Loading...")
         self.coolantTemp.setText("Loading...")
-        self.brakePressure.setText("Loading...")
-        self.oilLevel.setText("Loading...")
+        self.exhaustTemp.setText("Loading...")
         self.gearPosition.setText("N")
